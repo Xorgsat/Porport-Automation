@@ -1,0 +1,79 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "1 notification.":
+      - alertdialog "Merchant saved successfully" [ref=e4] [cursor=pointer]:
+        - alert [ref=e5]:
+          - img "descriptionIcon" [ref=e6]
+          - generic [ref=e9]: Merchant saved successfully
+        - button "closeButton" [ref=e10]:
+          - img [ref=e11]
+    - main [ref=e13]:
+      - generic [ref=e14]:
+        - navigation [ref=e15]:
+          - generic [ref=e16]:
+            - generic [ref=e19]: POSPORT
+            - list
+            - list [ref=e20]:
+              - listitem [ref=e21]:
+                - generic [ref=e25]:
+                  - img [ref=e26] [cursor=pointer]
+                  - textbox "Search" [ref=e29]
+              - listitem [ref=e30]:
+                - button [ref=e31] [cursor=pointer]:
+                  - img [ref=e32]
+              - listitem [ref=e35]:
+                - button [ref=e36] [cursor=pointer]:
+                  - img [ref=e37]
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - generic [ref=e41]:
+              - generic [ref=e44] [cursor=pointer]:
+                - img [ref=e45]
+                - generic [ref=e50]: dashboard
+              - generic [ref=e53] [cursor=pointer]:
+                - img [ref=e54]
+                - generic [ref=e59]: merchants
+              - generic [ref=e62] [cursor=pointer]:
+                - img [ref=e63]
+                - generic [ref=e65]: resellers
+              - generic [ref=e68] [cursor=pointer]:
+                - img [ref=e69]
+                - generic [ref=e71]: payments
+              - generic [ref=e74] [cursor=pointer]:
+                - img [ref=e75]
+                - generic [ref=e78]: settings
+            - button "Sign Out" [ref=e80] [cursor=pointer]:
+              - img [ref=e81]
+              - text: Sign Out
+          - main [ref=e85]:
+            - generic [ref=e86]:
+              - generic [ref=e88]:
+                - img [ref=e89] [cursor=pointer]
+                - text: Add Merchant
+              - generic "Options" [ref=e91]:
+                - tablist "Options" [ref=e92]:
+                  - tab "Merchant Info" [ref=e94] [cursor=pointer]:
+                    - generic [ref=e95]: Merchant Info
+                  - tab "Products" [selected] [ref=e96] [cursor=pointer]:
+                    - generic [ref=e97]: Products
+                  - tab "Contacts" [ref=e98] [cursor=pointer]:
+                    - generic [ref=e99]: Contacts
+                  - tab "Stores" [ref=e100] [cursor=pointer]:
+                    - generic [ref=e101]: Stores
+                  - tab "Attachments" [ref=e102] [cursor=pointer]:
+                    - generic [ref=e103]: Attachments
+                  - tab "Payments" [ref=e104] [cursor=pointer]:
+                    - generic [ref=e105]: Payments
+              - tabpanel "Products" [ref=e106]:
+                - generic [ref=e108]:
+                  - generic [ref=e110]:
+                    - generic "Loading" [ref=e111]
+                    - paragraph [ref=e125]: Fetching...
+                  - generic [ref=e126]:
+                    - button "Save & Continue" [ref=e128] [cursor=pointer]
+                    - button "Cancel" [ref=e130] [cursor=pointer]
+  - alert [ref=e131]
+```
