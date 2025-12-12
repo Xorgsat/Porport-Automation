@@ -1,6 +1,7 @@
 // pages/MerchantPage.js
 import { expect } from '@playwright/test';
 import { LoginPage } from './loginpage';
+import { generateUniqueMerchantData } from '../util/testdata';
 
 export class MerchantPage {
     constructor(page) {
@@ -21,7 +22,7 @@ export class MerchantPage {
         await this.page
             .getByRole('row', { name: '1' })
             .getByRole('button')
-            .first()
+            .nth(0)
             .click();
     }
 
@@ -41,7 +42,7 @@ export class MerchantPage {
         await this.page
             .getByRole('button', { name: 'Select industry type Industry' })
             .click();
-        await this.page.getByRole('option', { name: 'Automotive' }).click();
+        await this.page.locator('[role="listbox"] [role="option"]').nth(0).click();
 
         await this.page.getByRole('button', { name: 'Sub Domain Domain Type*' }).click();
         await this.page.getByRole('textbox', { name: 'Sub Domain*' }).fill('www.AC');
@@ -188,7 +189,7 @@ export class MerchantPage {
         await this.page
             .getByRole('button', { name: 'Select Contact Select Contact*' })
             .click();
-        await this.page.locator('[role="option"]').nth(1).click();
+        await this.page.locator('[role="option"]').nth(0).click();
 
         await this.page
             .getByRole('button', { name: 'toggle password visibility' })
@@ -217,39 +218,19 @@ export class MerchantPage {
             { timeout: 15000 }
         );
 
-        const checkbox = this.page.locator('tr input[type="checkbox"]').first();
-        await checkbox.waitFor({ timeout: 50000 });
-        await checkbox.check();
-
-        await this.page.waitForTimeout(1000);
-
         const changeStatusButton = this.page
-            .locator(
-                'button:has-text("Change status"), button:has-text("Change Status"), button:has-text("Status"), [data-testid*="status"], [aria-label*="status"]'
-            )
-            .first();
+            .getByRole('row', { name: '1', exact: true }).getByLabel('');
 
         await changeStatusButton.click();
         await this.page.waitForTimeout(1000);
 
         const statusOption = this.page
-            .locator(
-                'option:has-text("Inactive"), [role="option"]:has-text("Inactive"), button:has-text("Inactive")'
-            )
-            .first();
+        .getByRole('button', { name: 'Yes, Change It' });
 
         await statusOption.click();
 
-        const confirmButton = this.page
-            .locator(
-                'button:has-text("Confirm"), button:has-text("Save"), button:has-text("Update")'
-            )
-            .first();
-
-        await confirmButton.click();
-
         await expect(
-            this.page.locator('text=Status updated, text=Success, text=Updated')
+            this.page.locator('text=Status changed successfully')
         ).toBeVisible({ timeout: 5000 });
     }
 }
