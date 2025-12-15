@@ -15,6 +15,14 @@ export class ResellerPage {
         await this.page.locator('div').filter({ hasText: /^resellers$/ }).nth(2).click();
     }
 
+    async openFirstContactRow() {
+        await this.page
+            .getByRole('row', { name: '1' })
+            .getByRole('button')
+            .nth(0)
+            .click();
+    }
+
     async addReseller() {
         const data = generateUniqueResellerData();
 
@@ -184,5 +192,118 @@ export class ResellerPage {
         await expect(
             this.page.locator('text=Reseller saved successfully')
         ).toBeVisible({ timeout: 10000 });
+    }
+
+    async addContactReseller() {
+        const data = generateUniqueResellerData();
+
+        await this.page.locator('button:has(path[d="M12 20h9"])').nth(0).click();
+        await this.page.getByRole('tab', { name: 'Contacts' }).click();
+        await this.page.getByRole('button', { name: 'Add Contact' }).click();
+        await this.page.getByRole('textbox', { name: 'First Name*' }).click();
+        await this.page.getByRole('textbox', { name: 'First Name*' }).fill(data.name);
+        await this.page.getByRole('textbox', { name: 'Last Name*' }).click();
+        await this.page.getByRole('textbox', { name: 'Last Name*' }).fill(data.name);
+        await this.page.getByRole('textbox', { name: 'Email*' }).click();
+        await this.page.getByRole('textbox', { name: 'Email*' }).fill(data.email);
+        await this.page.getByRole('textbox', { name: 'Phone Number*' }).click();
+        await this.page.getByRole('textbox', { name: 'Phone Number*' }).fill(data.phone);
+        await this.page.getByRole('radio', { name: 'Inactive' }).click();
+        await this.page.getByRole('radio', { name: 'Active', exact: true }).click();
+        await this.page.getByRole('checkbox', { name: 'Set as primary' }).click();
+        await this.page.getByRole('button', { name: 'Save & Continue' }).click();
+        await expect(this.page.getByText('Contact saved successfully')).toBeVisible({timeout: 5000});
+    }
+
+    async editContactReseller() {
+        const data = generateUniqueResellerData();
+
+        await this.page.locator('button:has(path[d="M12 20h9"])').nth(0).click();
+        await this.page.getByRole('tab', { name: 'Contacts' }).click();
+        await this.openFirstContactRow();
+        await this.page.getByRole('textbox', { name: 'First Name*' }).click();
+        await this.page.getByRole('textbox', { name: 'First Name*' }).fill(`${data.name} Edited`);
+        await this.page.getByRole('textbox', { name: 'Last Name*' }).click();
+        await this.page.getByRole('textbox', { name: 'Last Name*' }).fill(`${data.name} Edited`);
+        await this.page.getByRole('textbox', { name: 'Email*' }).click();
+        await this.page.getByRole('textbox', { name: 'Email*' }).fill(data.email);
+        await this.page.getByRole('textbox', { name: 'Phone Number*' }).click();
+        await this.page.getByRole('textbox', { name: 'Phone Number*' }).fill(data.phone);
+        await this.page.getByRole('radio', { name: 'Inactive' }).click();
+        await this.page.getByRole('radio', { name: 'Active', exact: true }).click();
+        await this.page.getByRole('checkbox', { name: 'Set as primary' }).click();
+        await this.page.getByRole('button', { name: 'Save & Continue' }).click();
+        await expect(this.page.getByText('Contact saved successfully')).toBeVisible({ timeout: 5000 });
+    }
+
+    async addAttachmentReseller() {
+        const data = generateUniqueResellerData();
+
+        await this.page.locator('button:has(path[d="M12 20h9"])').nth(0).click();
+        await this.page.getByRole('tab', { name: 'Attachments' }).click();
+        await this.page.getByRole('button', { name: 'Add Attachment' }).click();
+        await this.page.getByRole('textbox', { name: 'File Name*' }).click();
+        await this.page.getByRole('textbox', { name: 'File Name*' }).fill(data.name);
+        await this.page.setInputFiles(
+            'input[type="file"]',
+            'C:/Users/SatyamTiwari/Downloads/chota chari.jpeg'
+        );
+        await this.page.getByRole('button', { name: 'Save & Continue' }).click();
+        await expect(this.page.getByText('Attachment saved successfully')).toBeVisible({ timeout: 5000 });
+    }
+
+    async downloadAttachmentReseller() {
+        const data = generateUniqueResellerData();
+
+        await this.page.locator('button:has(path[d="M12 20h9"])').nth(0).click();
+        await this.page.getByRole('tab', { name: 'Attachments' }).click();
+        await this.openFirstContactRow();
+
+    }
+
+    async editAttachmentReseller() {
+        const data = generateUniqueResellerData();
+
+        await this.page.locator('button:has(path[d="M12 20h9"])').nth(0).click();
+        await this.page.getByRole('tab', { name: 'Attachments' }).click();
+        await this.page
+            .getByRole('row', { name: '1' })
+            .getByRole('button')
+            .nth(1)
+            .click();
+        await this.page.getByRole('textbox').nth(0).click();
+        await this.page.getByRole('textbox', { name: 'File Name*' }).fill(data.name);
+        await this.page.setInputFiles(
+            'input[type="file"]',
+            'C:/Users/SatyamTiwari/Downloads/chota chari.jpeg'
+        );
+        await this.page.getByRole('button', { name: 'Save & Continue' }).click();
+        await expect(this.page.getByText('Attachment saved successfully')).toBeVisible({ timeout: 5000 });
+    }
+
+    async deleteFirstAttachment() {
+        await this.page.locator('button:has(path[d="M12 20h9"])').nth(0).click();
+        await this.page.getByRole('tab', { name: 'Attachments' }).click();
+        await this.page
+            .getByRole('row', { name: '1' })
+            .getByRole('button')
+            .nth(2)
+            .click();
+        await this.page.getByRole('button', { name: 'Yes, Delete It' }).click();
+
+        await expect(this.page.getByText('Attachment deleted successfully')).toBeVisible({ timeout: 5000 });
+
+    }
+
+    async deleteFirstReseller() {
+        await this.page
+            .getByRole('row', { name: '1' })
+            .getByRole('button')
+            .nth(1)
+            .click();
+        await this.page.getByRole('button', { name: 'Yes, Delete It' }).click();
+
+        await expect(this.page.getByText('Reseller deleted successfully')).toBeVisible({ timeout: 5000 }); 
+
     }
 }

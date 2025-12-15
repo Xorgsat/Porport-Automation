@@ -38,6 +38,11 @@ test.describe('Settings - Tax & Modules', () => {
         await settingsPage.SystemWide();
     });
 
+    test('To verify product updation', async ({ page }) => {
+        const settingsPage = new SettingsPage(page);
+        await settingsPage.updateproduct();
+    });
+
     test('To verify module settings functionality', async ({ page }) => {
         const settingsPage = new SettingsPage(page);
         await settingsPage.createModulePrice();

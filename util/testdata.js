@@ -23,3 +23,12 @@ export function generateUniqueResellerData() {
         note: `Reseller note ${timestamp}`,
     };
 }
+
+export function generateUniqueGuideData() {
+    const timestamp = Date.now();
+    return {
+        selectionTitle: `Titles ${timestamp}`,
+        guideTitle: `Guide${timestamp}`,
+        description: `Descriprtion note ${timestamp}`,
+    };
+}
