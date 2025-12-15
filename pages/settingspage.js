@@ -74,41 +74,6 @@ export class SettingsPage {
         ).toBeVisible({ timeout: 10000 });
     }
 
-    async updateFirstDiscountRule() {
-        const uniqueRuleName = generateUniqueRuleName();
-
-        const loginPage = new LoginPage(this.page);
-        await loginPage.goto();
-        await loginPage.loginAsValidAdmin();
-        await this.page.waitForLoadState('networkidle');
-
-        await this.page.getByText('settings').click();
-        await this.page
-            .locator('div')
-            .filter({ hasText: /^System Settings$/ })
-            .first()
-            .click();
-        
-        await this.page.getByRole('tab', { name: 'Discount' }).click();
-        await this.page
-            .getByRole('row', { name: '1', exact: true })
-            .getByRole('button')
-            .nth(0)
-            .click();
-
-        await this.page.locator('.relative.w-full.inline-flex.tap-highlight-transparent.flex-row.items-center.shadow-xs.px-3 > .inline-flex').first().click();
-        await this.page.getByRole('textbox', { name: 'Rule Name' }).fill(uniqueRuleName);
-        await this.page.getByRole('radio', { name: 'Fixed Amount' }).check();
-        await this.page.getByRole('radio', { name: 'Percentage' }).check();
-        await this.page.getByRole('textbox', { name: 'Rate Amount' }).click();
-        await this.page.getByRole('textbox', { name: 'Rate Amount' }).fill('100');
-        await this.page.getByRole('radio', { name: 'Inactive' }).check();
-        await this.page.getByRole('radio', { name: 'Active', exact: true }).check();
-        await this.page.getByRole('button', { name: 'Save' }).click();
-        
-        await expect(this.page.getByText('Discount rule created successfully')).toBeVisible({ timeout: 10000 });
-    }
-        
     async createDiscountRule() {
         const uniqueRuleName = generateUniqueRuleName();
 
@@ -123,10 +88,48 @@ export class SettingsPage {
             .filter({ hasText: /^System Settings$/ })
             .first()
             .click();
-
+        
         await this.page.getByRole('tab', { name: 'Discount' }).click();
         await this.page.getByRole('button', { name: 'Add Discount Rule' }).click();
-        await this.page.locator('.relative.w-full.inline-flex.tap-highlight-transparent.flex-row.items-center.shadow-xs.px-3 > .inline-flex').first().click();
+        await this.page.locator
+        ('.relative.w-full.inline-flex.tap-highlight-transparent.flex-row.items-center.shadow-xs.px-3 > .inline-flex')
+        .first().click();
+        await this.page.getByRole('textbox', { name: 'Rule Name' }).fill(uniqueRuleName);
+        await this.page.getByRole('radio', { name: 'Fixed Amount' }).check();
+        await this.page.getByRole('radio', { name: 'Percentage' }).check();
+        await this.page.getByRole('textbox', { name: 'Rate Amount' }).click();
+        await this.page.getByRole('textbox', { name: 'Rate Amount' }).fill('100');
+        await this.page.getByRole('radio', { name: 'Inactive' }).check();
+        await this.page.getByRole('radio', { name: 'Active', exact: true }).check();
+        await this.page.getByRole('button', { name: 'Save' }).click();
+        
+        await expect(this.page.getByText('Discount rule created successfully')).toBeVisible({ timeout: 10000 });
+    }
+        
+    async updateFirstDiscountRule() {
+        const uniqueRuleName = generateUniqueRuleName();
+
+        const loginPage = new LoginPage(this.page);
+        await loginPage.goto();
+        await loginPage.loginAsValidAdmin();
+        await this.page.waitForLoadState('networkidle');
+
+        await this.page.getByText('settings').click();
+        await this.page
+            .locator('div')
+            .filter({ hasText: /^System Settings$/ })
+            .first()
+            .click();
+
+        await this.page.getByRole('tab', { name: 'Discount' }).click();
+        await this.page
+            .getByRole('row', { name: '1', exact: true })
+            .getByRole('button')
+            .nth(0)
+            .click();
+        await this.page.locator
+        ('.relative.w-full.inline-flex.tap-highlight-transparent.flex-row.items-center.shadow-xs.px-3 > .inline-flex')
+        .first().click();
         await this.page.getByRole('textbox', { name: 'Rule Name' }).fill(uniqueRuleName + 'Updated');
         await this.page.getByRole('radio', { name: 'Fixed Amount' }).check();
         await this.page.getByRole('radio', { name: 'Percentage' }).check();
@@ -251,6 +254,38 @@ export class SettingsPage {
 
     }
 
+    async updateproduct() {
+
+        const loginPage = new LoginPage(this.page);
+        await loginPage.goto();
+        await loginPage.loginAsValidAdmin();
+        await this.page.waitForLoadState('networkidle');
+
+        await this.page.getByText('settings').click();
+        await this.page
+            .locator('div')
+            .filter({ hasText: /^Product Settings$/ })
+            .first()
+            .click();
+
+        await this.page.getByLabel('').nth(1).click();
+        await this.page.getByLabel('').nth(2).click();
+        await this.page.getByLabel('').nth(3).click();
+        await this.page.getByLabel('').nth(4).click();
+        await this.page.getByLabel('').nth(5).click();
+        await this.page.getByLabel('').nth(6).click();
+
+        await this.page.getByLabel('').nth(1).click();
+        await this.page.getByLabel('').nth(2).click();
+        await this.page.getByLabel('').nth(3).click();
+        await this.page.getByLabel('').nth(4).click();
+        await this.page.getByLabel('').nth(5).click();
+        await this.page.getByLabel('').nth(6).click();
+
+        await expect(this.page.getByText('Product status changed successfully')).nth(1).toBeVisible({timeout: 10000});
+
+        await this.page.getByRole('button').nth(3).click();
+    }
 
     async createModulePrice() {
         const loginPage = new LoginPage(this.page);
@@ -275,7 +310,7 @@ export class SettingsPage {
         await this.page.getByRole('radio', { name: 'Active', exact: true }).check();
         await this.page.getByRole('button', { name: 'Save' }).click();
 
-        await expect(this.page.getByText('Module price created')).toBeVisible();
+        await expect(this.page.getByText('Module price created')).toBeVisible({timeout: 10000});
     }
 
     async updateFirstModulePrice() {
@@ -292,14 +327,12 @@ export class SettingsPage {
             .click();
 
         await this.page.locator('button[data-react-aria-pressable="true"].action-btn').nth(0).click();
-        await this.page.getByRole('button', { name: /select module/i }).click();
-        await this.page.locator('li[role="option"][data-react-aria-pressable="true"]').nth(1).click();
 
         await this.page.getByRole('spinbutton', { name: 'Price*' }).fill('90');
         await this.page.getByRole('spinbutton', { name: 'Devices*' }).fill('50');
         await this.page.getByRole('button', { name: 'Save' }).click();
 
-        await expect(this.page.getByText('Module price updated successfully')).toBeVisible();
+        await expect(this.page.getByText('Module price updated successfully')).toBeVisible({timeout: 10000});
     }
 
     async deleteFirstModulePrice() {

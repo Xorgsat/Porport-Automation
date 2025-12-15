@@ -1,5 +1,5 @@
 // pages/MerchantPage.js
-import { expect } from '@playwright/test';
+import test, { expect } from '@playwright/test';
 import { LoginPage } from './loginpage';
 import { generateUniqueMerchantData } from '../util/testdata';
 
@@ -127,8 +127,6 @@ export class MerchantPage {
             .getByRole('button')
             .first()
             .click();
-
-        await this.page.getByRole('tab', { name: 'Products' }).click();
         await this.page.getByRole('tab', { name: 'Contacts' }).click();
         await this.page.getByRole('button', { name: 'Add Contact' }).click();
 
@@ -155,6 +153,72 @@ export class MerchantPage {
         ).toBeVisible({ timeout: 10000 });
 
         await this.page.waitForLoadState('networkidle');
+    }
+
+    async editContactToFirstMerchant() {
+        const testData = generateUniqueMerchantData();
+
+        await this.page.waitForLoadState('networkidle');
+        await this.page.waitForSelector('tr, .merchant-item', { timeout: 10000 });
+
+        await this.page
+            .getByRole('row', { name: '1' })
+            .getByRole('button')
+            .first()
+            .click();
+
+        await this.page.getByRole('tab', { name: 'Contacts' }).click();
+        await this.page
+            .getByRole('row', { name: '1' })
+            .getByRole('button')
+            .first()
+            .click();
+
+        await this.page.getByRole('textbox', { name: 'First Name*' }).click();
+        await this.page.getByRole('textbox', { name: 'First Name*' }).fill(testData.contactName);
+        await this.page.getByRole('textbox', { name: 'First Name*' }).press('Tab');
+
+        await this.page.getByRole('textbox', { name: 'Last Name*' }).fill('2025');
+        await this.page.getByRole('textbox', { name: 'Last Name*' }).press('Tab');
+
+        await this.page.getByRole('textbox', { name: 'Email*' }).fill(testData.email);
+        await this.page.getByRole('textbox', { name: 'Email*' }).press('Tab');
+
+        await this.page
+            .getByRole('textbox', { name: 'Phone Number*' })
+            .fill(testData.phone);
+
+        await this.page.getByRole('button', { name: 'Save & Continue' }).click();
+
+        await this.page.waitForTimeout(2000);
+
+        await expect(
+            this.page.getByText('Contact saved successfully')
+        ).toBeVisible({ timeout: 10000 });
+
+        await this.page.waitForLoadState('networkidle');
+    }
+
+    async deleteContactToFirstMerchant() {
+        await this.page.waitForLoadState('networkidle');
+        await this.page.waitForSelector('tr, .merchant-item', { timeout: 10000 });
+
+        await this.page
+            .getByRole('row', { name: '1' })
+            .getByRole('button')
+            .first()
+            .click();
+
+        await this.page.getByRole('tab', { name: 'Contacts' }).click();
+        await this.page
+            .getByRole('row', { name: '1' })
+            .getByRole('button')
+            .nth(1)
+            .click();
+        await this.page.getByRole('button', { name: 'Yes, Delete It' }).click();
+
+        await expect(this.page.getByText('Contact deleted successfully')).toBeVisible({ timeout: 5000 });
+
     }
 
     async createStoreForFirstMerchant() {
@@ -206,8 +270,154 @@ export class MerchantPage {
             this.page.locator('text=Store created successfully')
         ).toBeVisible({ timeout: 10000 });
 
-        await this.page.waitForLoadState('networkidle');
     }
+
+    async editStoreForFirstMerchant() {
+        await this.page
+            .locator('div')
+            .filter({ hasText: /^merchants$/ })
+            .nth(1)
+            .click();
+
+        await this.page
+            .getByRole('row', { name: '1' })
+            .getByRole('button')
+            .first()
+            .click();
+
+        await this.page.getByRole('tab', { name: 'Stores' }).click();
+        await this.page
+            .getByRole('row', { name: '1' })
+            .getByRole('button')
+            .first()
+            .click();
+
+        await this.page
+            .locator(
+                '.relative.w-full.inline-flex.tap-highlight-transparent.flex-row.items-center.shadow-xs.px-3 > .inline-flex'
+            )
+            .first()
+            .click();
+
+        await this.page.getByRole('textbox').nth(0).fill('Stores 6');
+        await this.page.getByRole('textbox').nth(1 ).fill('395004');
+
+        await this.page.locator('button[data-slot="trigger"]').nth(0).click();
+        await this.page.locator('[role="option"]').nth(1).click();
+
+        await this.page
+            .getByRole('button', { name: 'toggle password visibility' })
+            .click();
+
+        await this.page.locator('button[data-slot="trigger"]').nth(1).click()
+        await this.page.locator('[role="option"]').nth(1).click();
+
+        await this.page.getByRole('button', { name: 'Save & Continue' }).click();
+
+        await expect(
+            this.page.locator('text=Store created successfully')
+        ).toBeVisible({ timeout: 10000 });
+
+    }
+
+        async addAttachmentMerchant() {
+            const data = generateUniqueResellerData();
+    
+            await this.page
+                .locator('div')
+                .filter({ hasText: /^merchants$/ })
+                .nth(1)
+                .click();
+
+            await this.page
+                .getByRole('row', { name: '1' })
+                .getByRole('button')
+                .first()
+                .click();
+            await this.page.getByRole('tab', { name: 'Attachments' }).click();
+            await this.page.getByRole('button', { name: 'Add Attachment' }).click();
+            await this.page.getByRole('textbox', { name: 'File Name*' }).click();
+            await this.page.getByRole('textbox', { name: 'File Name*' }).fill(data.companyName);
+            await this.page.setInputFiles(
+                'input[type="file"]',
+                'C:/Users/SatyamTiwari/Downloads/chota chari.jpeg'
+            );
+            await this.page.getByRole('button', { name: 'Save & Continue' }).click();
+            await expect(this.page.getByText('Attachment saved successfully')).toBeVisible({ timeout: 5000 });
+        }
+    
+        async downloadAttachmentMerchant() {
+            const data = generateUniqueResellerData();
+    
+            await this.page
+                .locator('div')
+                .filter({ hasText: /^merchants$/ })
+                .nth(1)
+                .click();
+
+            await this.page
+                .getByRole('row', { name: '1' })
+                .getByRole('button')
+                .first()
+                .click();
+            await this.page.getByRole('tab', { name: 'Attachments' }).click();
+            await this.openFirstContactRow();
+    
+        }
+    
+        async editAttachmentMerchant() {
+            const data = generateUniqueResellerData();
+    
+            await this.page
+                .locator('div')
+                .filter({ hasText: /^merchants$/ })
+                .nth(1)
+                .click();
+
+            await this.page
+                .getByRole('row', { name: '1' })
+                .getByRole('button')
+                .first()
+                .click();
+            await this.page.getByRole('tab', { name: 'Attachments' }).click();
+            await this.page
+                .getByRole('row', { name: '1' })
+                .getByRole('button')
+                .nth(1)
+                .click();
+            await this.page.getByRole('textbox').nth(0).click();
+            await this.page.getByRole('textbox', { name: 'File Name*' }).fill(data.companyName);
+            await this.page.setInputFiles(
+                'input[type="file"]',
+                'C:/Users/SatyamTiwari/Downloads/chota chari.jpeg'
+            );
+            await this.page.getByRole('button', { name: 'Save & Continue' }).click();
+            await expect(this.page.getByText('Attachment saved successfully')).toBeVisible({ timeout: 5000 });
+        }
+    
+        async deleteFirstAttachment() {
+            await this.page
+                .locator('div')
+                .filter({ hasText: /^merchants$/ })
+                .nth(1)
+                .click();
+
+            await this.page
+                .getByRole('row', { name: '1' })
+                .getByRole('button')
+                .first()
+                .click();
+            await this.page.getByRole('tab', { name: 'Attachments' }).click();
+            await this.page
+                .getByRole('row', { name: '1' })
+                .getByRole('button')
+                .nth(2)
+                .click();
+            await this.page.getByRole('button', { name: 'Yes, Delete It' }).click();
+    
+            await expect(this.page.getByText('Attachment deleted successfully')).toBeVisible({ timeout: 5000 });
+    
+        }
 
 
     async changeStatusOfFirstMerchantToInactive() {

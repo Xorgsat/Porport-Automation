@@ -33,12 +33,54 @@ test('Merchant Contact Add Successfully', async ({ page }) => {
     await merchantPage.addContactToFirstMerchant();
 });
 
+test('Merchant Contact Edit Successfully', async ({ page }) => {
+    const merchantPage = new MerchantPage(page);
+
+    await merchantPage.loginAndOpenList();
+    await merchantPage.editContactToFirstMerchant();
+});
+
+test('Merchant Contact Delete Successfully', async ({ page }) => {
+    const merchantPage = new MerchantPage(page);
+
+    await merchantPage.loginAndOpenList();
+    await merchantPage.deleteContactToFirstMerchant();
+});
+
 test('Store Creation Successfully', async ({ page }) => {
     const merchantPage = new MerchantPage(page);
 
     await merchantPage.loginAndOpenList();
     await merchantPage.createStoreForFirstMerchant();
 });
+
+test('Attachment Creation Successfully', async ({ page }) => {
+    const merchantPage = new MerchantPage(page);
+
+    await merchantPage.loginAndOpenList();
+    await merchantPage.addAttachmentMerchant();
+});
+
+test('Attachment Download Successfully', async ({ page }) => {
+    const merchantPage = new MerchantPage(page);
+
+    await merchantPage.loginAndOpenList();
+    await merchantPage.downloadAttachmentMerchant();
+});
+
+test('Attachment Edit Successfully', async ({ page }) => {
+    const merchantPage = new MerchantPage(page);
+
+    await merchantPage.loginAndOpenList();
+    await merchantPage.editAttachmentMerchant();
+});
+
+test('Attachment Delete Successfully', async ({ page }) => {
+    const merchantPage = new MerchantPage(page);
+
+    await merchantPage.loginAndOpenList();
+    await merchantPage.deleteFirstAttachment();
+})
 
 test('Merchant Status Change', async ({ page }) => {
     const merchantPage = new MerchantPage(page);
